@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+
+class Torre
+{
+    public Stack<int> discos = new Stack<int>();
+    public string nombre;
+
+    public Torre(string nombre)
+    {
+        this.nombre = nombre;
+    }
+
+    public void MoverDiscoA(Torre destino)
+    {
+        int disco = discos.Pop();
+        destino.discos.Push(disco);
+        Console.WriteLine($"Mover disco {disco} de {nombre} a {destino.nombre}");
+    }
+}
+
+class ProgramaHanoi
+{
+    static void ResolverHanoi(int n, Torre origen, Torre destino, Torre auxiliar)
+    {
+        if (n == 1)
+        {
+            origen.MoverDiscoA(destino);
+        }
+        else
+        {
+            ResolverHanoi(n - 1, origen, auxiliar, destino);
+            origen.MoverDiscoA(destino);
+            ResolverHanoi(n - 1, auxiliar, destino, origen);
+        }
+    }
+
+    static void Main()
+    {
+        int n = 3; // Número de discos
+        Torre origen = new Torre("Origen");
+        Torre destino = new Torre("Destino");
+        Torre auxiliar = new Torre("Auxiliar");
+
+        // Agregar discos a la torre origen
+        for (int i = n; i >= 1; i--)
+        {
+            origen.discos.Push(i);
+        }
+
+        Console.WriteLine("Movimientos para resolver las Torres de Hanoi:\n");
+        ResolverHanoi(n, origen, destino, auxiliar);
+    }
+}
